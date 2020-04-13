@@ -29,6 +29,9 @@ if __name__ == "__main__":
     h2 = net.addDockerHost(
         "h2", dimage="dev_test", ip="10.0.0.2", docker_args={"hostname": "h2"},
     )
+    h3 = net.addDockerHost(
+        "h3", dimage="dev_test", ip="10.0.0.3", docker_args={"hostname": "h3"},
+    )
 
     info("*** Adding switch and links\n")
     switch1 = net.addSwitch("s1")
@@ -36,7 +39,7 @@ if __name__ == "__main__":
     net.addLink(switch1, h1, bw=10, delay="10ms")
     net.addLink(switch1, switch2, bw=10, delay="10ms")
     net.addLink(switch2, h2, bw=10, delay="10ms")
-
+    net.addLink(switch2, h3, bw=20, delay="1ms")
     info("\n*** Starting network\n")
     net.start()
 
@@ -44,6 +47,9 @@ if __name__ == "__main__":
         "srv1", "h1", "echo_server", "python /home/server.py", docker_args={},
     )
     srv2 = mgr.addContainer("srv2", "h2", "dev_test", "bash", docker_args={})
+    srv3 = mgr.addContainer(
+        "srv3", "h3", "echo_server", "python /home/server.py", docker_args={},
+    )
 
     if not AUTOTEST_MODE:
         # Cannot spawn xterm for srv1 since BASH is not installed in the image:
@@ -53,5 +59,6 @@ if __name__ == "__main__":
 
     mgr.removeContainer("srv1")
     mgr.removeContainer("srv2")
+    mgr.removeContainer("srv3")
     net.stop()
     mgr.stop()
