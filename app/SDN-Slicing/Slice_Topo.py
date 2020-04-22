@@ -24,13 +24,13 @@ class Topology(Topo):
         #Create Hosts
         #info("*** Add Hosts\n")
 	#da host a dockerhost
-        host1=self.addHost("h1", dimage="dev_test", ip="192.0.0.1", docker_args={"hostname":"h1"},)
-        host2=self.addHost("h2", dimage="dev_test", ip="192.0.0.2", docker_args={"hostname":"h2"},)
-        host3=self.addHost("h3", dimage="dev_test", ip="192.0.0.3", docker_args={"hostname":"h3"},)
-        host4=self.addHost("h4", dimage="dev_test", ip="192.0.0.4", docker_args={"hostname":"h4"},)
-        host5=self.addHost("h5", dimage="dev_test", ip="192.0.0.5", docker_args={"hostname":"h5"},)
-        host6=self.addHost("h6", dimage="dev_test", ip="192.0.0.6", docker_args={"hostname":"h6"},)
-        host7=self.addHost("h7", dimage="dev_test", ip="192.0.0.7", docker_args={"hostname":"h7"},)
+        host1=self.addHost("h1", dimage="dev_test", ip="170.0.0.1", docker_args={"hostname":"h1"},)
+        host2=self.addHost("h2", dimage="dev_test", ip="10.0.0.1", docker_args={"hostname":"h2"},)
+        host3=self.addHost("h3", dimage="dev_test", ip="12.0.0.1", docker_args={"hostname":"h3"},)
+        host4=self.addHost("h4", dimage="dev_test", ip="80.0.0.1", docker_args={"hostname":"h4"},)
+        host5=self.addHost("h5", dimage="dev_test", ip="192.0.0.1", docker_args={"hostname":"h5"},)
+        host6=self.addHost("h6", dimage="dev_test", ip="192.0.0.2", docker_args={"hostname":"h6"},)
+        host7=self.addHost("h7", dimage="dev_test", ip="192.0.0.3", docker_args={"hostname":"h7"},)
 
         #Creating Links
         #info("*** Add Links\n")
