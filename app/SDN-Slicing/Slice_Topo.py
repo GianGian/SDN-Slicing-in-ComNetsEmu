@@ -16,21 +16,32 @@ class Topology(Topo):
 
         #Create switches
         #info("*** Add Switches\n")
-        switch1=self.addSwitch("s1")
-        switch2=self.addSwitch("s2")
-        switch3=self.addSwitch("s3")
-        switch4=self.addSwitch("s4")
+	# Create switch nodes
+        for i in range(4):
+            sconfig = {"dpid": "%016x" % (i + 1)}
+            self.addSwitch("s%d" % (i + 1), **sconfig)
+
+        #switch1=self.addSwitch("s1")
+        #switch2=self.addSwitch("s2")
+        #switch3=self.addSwitch("s3")
+        #switch4=self.addSwitch("s4")
 
         #Create Hosts
         #info("*** Add Hosts\n")
 	#da host a dockerhost
-        host1=self.addHost("h1", dimage="dev_test", ip="170.0.0.1", docker_args={"hostname":"h1"},)
-        host2=self.addHost("h2", dimage="dev_test", ip="10.0.0.1", docker_args={"hostname":"h2"},)
-        host3=self.addHost("h3", dimage="dev_test", ip="12.0.0.1", docker_args={"hostname":"h3"},)
-        host4=self.addHost("h4", dimage="dev_test", ip="80.0.0.1", docker_args={"hostname":"h4"},)
-        host5=self.addHost("h5", dimage="dev_test", ip="192.0.0.1", docker_args={"hostname":"h5"},)
-        host6=self.addHost("h6", dimage="dev_test", ip="192.0.0.2", docker_args={"hostname":"h6"},)
-        host7=self.addHost("h7", dimage="dev_test", ip="192.0.0.3", docker_args={"hostname":"h7"},)
+        #host1=self.addHost("h1", dimage="dev_test", ip="170.0.0.1", docker_args={"hostname":"h1"},)
+        #host2=self.addHost("h2", dimage="dev_test", ip="10.0.0.1", docker_args={"hostname":"h2"},)
+        #host3=self.addHost("h3", dimage="dev_test", ip="12.0.0.1", docker_args={"hostname":"h3"},)
+        #host4=self.addHost("h4", dimage="dev_test", ip="80.0.0.1", docker_args={"hostname":"h4"},)
+        #host5=self.addHost("h5", dimage="dev_test", ip="192.0.0.1", docker_args={"hostname":"h5"},)
+        #host6=self.addHost("h6", dimage="dev_test", ip="192.0.0.2", docker_args={"hostname":"h6"},)
+        #host7=self.addHost("h7", dimage="dev_test", ip="192.0.0.3", docker_args={"hostname":"h7"},)
+
+        # Create template host, switch, and link
+        host_config = dict(inNamespace=True)
+
+        for i in range(7):
+            self.addHost("h%d" % (i + 1), **host_config)
 
         #Creating Links
         #info("*** Add Links\n")
