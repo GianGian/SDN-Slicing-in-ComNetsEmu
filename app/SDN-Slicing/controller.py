@@ -29,6 +29,7 @@ class TrafficSlicing(app_manager.RyuApp):
         self.end_swtiches = [1, 4]
 
     @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER)
+	#handshake controller-switch
     def switch_features_handler(self, ev):
         datapath = ev.msg.datapath
         ofproto = datapath.ofproto
@@ -41,6 +42,7 @@ class TrafficSlicing(app_manager.RyuApp):
         ]
         self.add_flow(datapath, 0, match, actions)
 
+	
     def add_flow(self, datapath, priority, match, actions):
         ofproto = datapath.ofproto
         parser = datapath.ofproto_parser
