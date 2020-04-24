@@ -5,6 +5,7 @@ from mininet.net import Mininet
 from mininet.node import OVSKernelSwitch, RemoteController
 from mininet.cli import CLI
 from mininet.link import TCLink
+from mininet.log import info, setLogLevel
 
 B1=10
 B2=1
@@ -14,37 +15,29 @@ class Topology(Topo):
     def __init__(self):
         Topo.__init__(self)
 
-        #Create switches
-        #info("*** Add Switches\n")
-	# Create switch nodes
-        for i in range(4):
-            sconfig = {"dpid": "%016x" % (i + 1)}
-            self.addSwitch("s%d" % (i + 1), **sconfig)
+        setLogLevel("info")
 
-        #switch1=self.addSwitch("s1")
-        #switch2=self.addSwitch("s2")
-        #switch3=self.addSwitch("s3")
-        #switch4=self.addSwitch("s4")
+        info("*** Add Switches\n")
+        sconfig1 = {"dpid": "%016x" % 1}
+        sconfig2 = {"dpid": "%016x" % 2}
+        sconfig3 = {"dpid": "%016x" % 3}
+        sconfig4 = {"dpid": "%016x" % 4}
+        self.addSwitch("s1",**sconfig1)
+        self.addSwitch("s2",**sconfig2)
+        self.addSwitch("s3",**sconfig3)
+        self.addSwitch("s4",**sconfig4)
 
-        #Create Hosts
-        #info("*** Add Hosts\n")
-	#da host a dockerhost
-        #host1=self.addHost("h1", dimage="dev_test", ip="170.0.0.1", docker_args={"hostname":"h1"},)
-        #host2=self.addHost("h2", dimage="dev_test", ip="10.0.0.1", docker_args={"hostname":"h2"},)
-        #host3=self.addHost("h3", dimage="dev_test", ip="12.0.0.1", docker_args={"hostname":"h3"},)
-        #host4=self.addHost("h4", dimage="dev_test", ip="80.0.0.1", docker_args={"hostname":"h4"},)
-        #host5=self.addHost("h5", dimage="dev_test", ip="192.0.0.1", docker_args={"hostname":"h5"},)
-        #host6=self.addHost("h6", dimage="dev_test", ip="192.0.0.2", docker_args={"hostname":"h6"},)
-        #host7=self.addHost("h7", dimage="dev_test", ip="192.0.0.3", docker_args={"hostname":"h7"},)
-
-        # Create template host, switch, and link
+        info("*** Add Hosts\n")
         host_config = dict(inNamespace=True)
+        self.addHost("h1", **host_config, ip="192.0.0.1")
+        self.addHost("h2", **host_config, ip="192.0.0.2")
+        self.addHost("h3", **host_config, ip="192.128.0.3")
+        self.addHost("h4", **host_config, ip="192.0.0.4")
+        self.addHost("h5", **host_config, ip="192.0.0.5")
+        self.addHost("h6", **host_config, ip="192.0.0.6")
+        self.addHost("h7", **host_config, ip="192.0.0.7")
 
-        for i in range(7):
-            self.addHost("h%d" % (i + 1), **host_config)
-
-        #Creating Links
-        #info("*** Add Links\n")
+        info("*** Add Links\n")
         self.addLink("h1","s1", bw=B1)
         self.addLink("h2","s1", bw=B1)
         self.addLink("h3","s1", bw=B1)
@@ -58,10 +51,6 @@ class Topology(Topo):
         self.addLink("s4","h6", bw=B1)
         self.addLink("s4","h7", bw=B1)
 
-        #Create Controller
-        #info("*** Add controller\n")
-       # net.addController("c0")
-
 topos = {"networkslicingtopo": (lambda: Topology())}
 
 if __name__ == "__main__":
@@ -74,6 +63,8 @@ if __name__ == "__main__":
         autoStaticArp=True,
         link=TCLink,
     )
+    
+    info("*** Add controller\n")
     controller = RemoteController("c1", ip="127.0.0.1", port=6633)
     net.addController(controller)
     net.build()
