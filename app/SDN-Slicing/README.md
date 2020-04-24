@@ -13,8 +13,11 @@ h2 ----             |  |          |  |         ---- h5
 h3 ----  		  	               ---- h6
 h4 ----                                        ---- h7
 ```
+./build_docker_images.sh
 
+ryu manager controller.py &
 
+sudo docker Slice_Topo.py
 
 
 

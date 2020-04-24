@@ -33,6 +33,7 @@ if __name__ == "__main__":
         "h3", dimage="dev_test", ip="10.0.0.3", docker_args={"hostname": "h3"},
     )
 
+
     info("*** Adding switch and links\n")
     switch1 = net.addSwitch("s1")
     switch2 = net.addSwitch("s2")
