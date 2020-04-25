@@ -20,6 +20,7 @@ class TrafficSlicing(app_manager.RyuApp):
         # outport = self.mac_to_port[dpid][mac_address]
         self.mac_to_port = {
             1: {"00:00:00:00:00:01": 1, "00:00:00:00:00:02": 2, "00:00:00:00:00:03": 3, "00:00:00:00:00:04": 4},
+            2: {"00:00:00:00:00:01": 1, "00:00:00:00:00:02": 1, "00:00:00:00:00:03": 1, "00:00:00:00:00:04": 1},
             4: {"00:00:00:00:00:05": 4, "00:00:00:00:00:06": 5, "00:00:00:00:00:07": 6},
         }
         self.slice_TCport = 9999
@@ -140,7 +141,7 @@ class TrafficSlicing(app_manager.RyuApp):
                 self._send_package(msg, datapath, in_port, actions)
 
             elif pkt.get_protocol(icmp.icmp):
-                slice_number = 2
+                slice_number = 1
                 out_port = self.slice_ports[dpid][slice_number]
                 match = datapath.ofproto_parser.OFPMatch(
                     in_port=in_port,
