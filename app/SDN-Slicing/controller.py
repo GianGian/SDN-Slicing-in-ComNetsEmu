@@ -97,7 +97,7 @@ class TrafficSlicing(app_manager.RyuApp):
                 self._send_package(msg, datapath, in_port, actions)
 
             elif (pkt.get_protocol(udp.udp)):
-                slice_number = 2
+                slice_number = 1
                 out_port = self.slice_ports[dpid][slice_number]
                 match = datapath.ofproto_parser.OFPMatch(
                     in_port=in_port,
@@ -111,8 +111,8 @@ class TrafficSlicing(app_manager.RyuApp):
                 self.add_flow(datapath, 2, match, actions)
                 self._send_package(msg, datapath, in_port, actions)
 
-            elif pkt.get_protocol(tcp.tcp) and ():
-                slice_number = 1
+            elif pkt.get_protocol(tcp.tcp) and (dst=="00:00:00:00:00:04" or dst=="00:00:00:00:00:07"):
+                slice_number = 3
                 out_port = self.slice_ports[dpid][slice_number]
                 match = datapath.ofproto_parser.OFPMatch(
                     in_port=in_port,
@@ -126,7 +126,7 @@ class TrafficSlicing(app_manager.RyuApp):
                 self._send_package(msg, datapath, in_port, actions)
 
             elif pkt.get_protocol(tcp.tcp):
-                slice_number = 3
+                slice_number = 2
                 out_port = self.slice_ports[dpid][slice_number]
                 match = datapath.ofproto_parser.OFPMatch(
                     in_port=in_port,
