@@ -86,6 +86,9 @@ class TrafficSlicing(app_manager.RyuApp):
         dst = eth.dst
         src = eth.src
 
+        ip=pkt.protocols[1]
+        ip_dst=ip.dst
+
         dpid = datapath.id
 
         if dpid in self.mac_to_port:
@@ -111,7 +114,7 @@ class TrafficSlicing(app_manager.RyuApp):
                 self.add_flow(datapath, 2, match, actions)
                 self._send_package(msg, datapath, in_port, actions)
 
-            elif pkt.get_protocol(tcp.tcp) and (dst=="00:00:00:00:00:04" or dst=="00:00:00:00:00:07"):
+            elif pkt.get_protocol(tcp.tcp) and (ip_dst== "192.0.0.4" or ip_dst=="192.0.0.7"):
                 slice_number = 3
                 out_port = self.slice_ports[dpid][slice_number]
                 match = datapath.ofproto_parser.OFPMatch(
