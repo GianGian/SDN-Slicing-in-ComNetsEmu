@@ -9,6 +9,10 @@ from ryu.lib.packet import ether_types
 from ryu.lib.packet import udp
 from ryu.lib.packet import tcp
 from ryu.lib.packet import icmp
+from ryu.lib import hub
+
+IP_H1="192.0.0.1"
+
 
 
 class TrafficSlicing(app_manager.RyuApp):
@@ -19,15 +23,41 @@ class TrafficSlicing(app_manager.RyuApp):
 
         # outport = self.mac_to_port[dpid][mac_address]
         self.mac_to_port = {
-            1: {"00:00:00:00:00:01": 1, "00:00:00:00:00:02": 2, "00:00:00:00:00:03": 3, "00:00:00:00:00:04": 4},
-            2: {"00:00:00:00:00:01": 1, "00:00:00:00:00:02": 1, "00:00:00:00:00:03": 1, "00:00:00:00:00:04": 1},
-            4: {"00:00:00:00:00:05": 4, "00:00:00:00:00:06": 5, "00:00:00:00:00:07": 6},
+            1: {"00:00:00:00:00:01": 1, "00:00:00:00:00:02": 2, "00:00:00:00:00:03": 3, "00:00:00:00:00:04":6, "00:00:00:00:00:05":6},
+            2: {"00:00:00:00:00:01": 1, "00:00:00:00:00:02": 1, "00:00:00:00:00:03": 1},
+            4: {"00:00:00:00:00:06": 4, "00:00:00:00:00:07": 5, "00:00:00:00:00:08": 6},
+            5: {"00:00:00:00:00:03": 3, "00:00:00:00:00:04": 1, "00:00:00:00:00:05":2},
         }
         self.slice_TCport = 9999
 
         # outport = self.slice_ports[dpid][slicenumber]
-        self.slice_ports = {1: {1: 5, 2: 5, 3: 6}, 2: {1: 2, 2: 3}, 4: {1: 2, 2: 2, 3: 3}}
+        self.slice_ports = {1: {1: 4, 2: 4, 3: 5}, 2: {1: 2, 2: 3}, 4: {1: 2, 2: 2, 3: 3}}
         self.end_swtiches = [1, 4]
+        self.switch_list=[1, 2, 3, 4, 5]
+       # self.updateRules_thread = hub.spawn(self.updateRules)
+
+    #def updateRules(self):
+    #    while True:
+    #        hub.sleep(3)
+    #        for id in self.switch_list:
+    #            self.send_table_stats_request(self.switch_list[id])
+    #        hub.sleep(3)
+    #    def send_table_stats_request(self, datapath):
+    #        ofp_parser = datapath.ofproto_parser
+    #        req = ofp_parser.OFPTableStatsRequest(datapath, 0)
+    #        datapath.send_msg(req)
+        
+    #    @set_ev_cls(ofp_event.EventOFPTableStatsReply, MAIN_DISPATCHER)
+    #    def table_stats_reply_handler(self, ev):
+    #        tables = []
+    #        for stat in ev.msg.body:
+    #            tables.append('table_id=%d active_count=%d lookup_count=%d '
+    #                      ' matched_count=%d' %
+    #                      (stat.table_id, stat.active_count,
+    #                       stat.lookup_count, stat.matched_count))
+    #        for t in tables:
+    #            print(tables[t])
+            #self.logger.debug('TableStats: %s', tables)
 
     @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER)
 	#handshake controller-switch
@@ -85,13 +115,16 @@ class TrafficSlicing(app_manager.RyuApp):
             return
         dst = eth.dst
         src = eth.src
-
+        
         ip=pkt.protocols[1]
         ip_dst=ip.dst
+        ip_src=ip.src
+
+
 
         dpid = datapath.id
 
-        if dpid in self.mac_to_port:
+        if dpid in self.mac_to_port :
             if dst in self.mac_to_port[dpid]:
                 out_port = self.mac_to_port[dpid][dst]
                 actions = [datapath.ofproto_parser.OFPActionOutput(out_port)]
@@ -114,7 +147,7 @@ class TrafficSlicing(app_manager.RyuApp):
                 self.add_flow(datapath, 2, match, actions)
                 self._send_package(msg, datapath, in_port, actions)
 
-            elif pkt.get_protocol(tcp.tcp) and (ip_dst== "192.0.0.4" or ip_dst=="192.0.0.7"):
+            elif pkt.get_protocol(tcp.tcp) and (ip_dst== IP_H1 or ip_src== IP_H1):
                 slice_number = 3
                 out_port = self.slice_ports[dpid][slice_number]
                 match = datapath.ofproto_parser.OFPMatch(

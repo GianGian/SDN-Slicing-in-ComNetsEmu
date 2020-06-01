@@ -1,17 +1,19 @@
+#SERVER FOR AUTONOMOUS DRIVE
+
+#Server is listening on a specific port
+#It can send back date, time or both basing of the host request
+
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-About: Simple TCP socket server.
-"""
-
 import socket
+import datetime
 
 # Create a TCP/IP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Bind the socket to the port
-server_address = ("", 65000)
+server_address = ("", 64000)
 print("starting up on {} port {}".format(*server_address))
 sock.bind(server_address)
 
@@ -29,10 +31,16 @@ while True:
         while True:
             data = connection.recv(16)
             print("received {!r}".format(data))
-            if data:
-                print("sending data back to the client")
-                connection.sendall(data)
-            else:
+            if data == "send date":
+                print("sending date to the client")
+                connection.sendall(datetime.date)
+            elif data == "send hour":
+                print("sending date to the client)
+                connection.sendall(datetime.time)
+            elif data == "send date and hour":
+                print("sending date and hour to the client")
+                connection.sendall(datetime.datetime.now)
+            else
                 print("no data from", client_address)
                 break
 
