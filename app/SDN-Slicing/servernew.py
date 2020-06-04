@@ -13,7 +13,7 @@ import datetime
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Bind the socket to the port
-server_address = ("", 64000)
+server_address = ("", 65000)
 print("starting up on {} port {}".format(*server_address))
 sock.bind(server_address)
 
@@ -30,17 +30,22 @@ while True:
         # Receive the data in small chunks and retransmit it
         while True:
             data = connection.recv(16)
+            #test = 'test'
+            #test = str(datetime.datetime(2,2,2,2,2,2))
+            test = str(datetime.datetime.now())
             print("received {!r}".format(data))
-            if data == "send date":
+            if data:
                 print("sending date to the client")
-                connection.sendall(datetime.date)
-            elif data == "send hour":
-                print("sending date to the client)
-                connection.sendall(datetime.time)
-            elif data == "send date and hour":
-                print("sending date and hour to the client")
-                connection.sendall(datetime.datetime.now)
-            else
+                connection.sendall(data)
+                #connection.send(b'ciao')
+                connection.sendall(str.encode(test))
+            #elif data == "send hour":
+            #    print("sending date to the client)
+            #    connection.sendall(datetime.time)
+            #elif data == "send date and hour":
+            #    print("sending date and hour to the client")
+            #    connection.sendall(datetime.datetime.now)
+            else:
                 print("no data from", client_address)
                 break
 
