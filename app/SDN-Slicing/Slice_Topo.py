@@ -10,7 +10,7 @@ from mininet.link import TCLink
 from mininet.log import info, setLogLevel
 from comnetsemu.net import Containernet, VNFManager
 
-B1=10
+B1=5
 B2=1
 DELAY="10ms"
 
@@ -82,7 +82,7 @@ def myTopology():
     srv6 = mgr.addContainer("srv6", "h6", "dev_test", "bash", docker_args={},)
     srv7 = mgr.addContainer("srv7", "h7", "dev_test", "bash", docker_args={},)
     srv8 = mgr.addContainer("srv8", "h8", "dev_test", "bash", docker_args={},)
-    spawnXtermDocker("srv4")
+    spawnXtermDocker("srv2")
     spawnXtermDocker("srv7")
     CLI(net)
     mgr.removeContainer("srv1")
