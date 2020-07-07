@@ -31,7 +31,7 @@ Finally to start the topology:
 sudo docker Slice_Topo.py
 ```
 
-The topology is as follows:
+##The topology is as follows:
 the three clients (h6, h7, h8) request their respective services from the servers (h1, h2, h3).
 
 The h1 server simulates an autonomus driving service for which low latency and high throughput is required. For this the service is provided through a special slice server-h1-s1-s4-end user which guarantees 5Mbps and the lowest hop number. The service is identified based on the server IP.
@@ -42,7 +42,7 @@ The third slide provides on the server side a brocker (h3) which has exclusive a
 
 Finally, the second slice is used for the ICMP protocol as it uses all the hops.
 
-how to test the topology:
+##How to test the topology:
 
 Inside mininet
 ```text
@@ -51,14 +51,13 @@ pingall
 The results will be a reachability of all servers and end users except for the IoT (h4, h5).
 subsequently by deactivating one or more switches 
 
+Inside mininet (where X is the number of the switch)
 ```text
-Inside mininet
 switch sX stop
-(where X is the number of the switch)
 ```
 it is possible to verify that some services will remain reachable and others not.
 
-To test IoT service
+###To test IoT service
 
 on client side:
 ```text
@@ -69,7 +68,7 @@ on server side:
 iperf -s
 ```
 
-To test Streeming service
+###To test Streeming service
 
 on client side:
 ```text
@@ -80,7 +79,8 @@ on server side:
 iperf -s -u -i 1
 ```
 
-To test Autonomous Driving service
+###To test Autonomous Driving service
+
 on client side:
 ```text
 telnet 192.0.0.1 65000
