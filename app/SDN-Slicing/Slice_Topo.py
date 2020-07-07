@@ -68,11 +68,16 @@ def myTopology():
     net.addLink("s4","h7", bw=B1)
     net.addLink("s4","h8", bw=B1)
 
-
+  
     info("*** Add controller\n")
-    controller = RemoteController("c1", ip="127.0.0.1", port=6633)
+    controller = RemoteController("c0", ip="127.0.0.1", port=6633)
     net.addController(controller)
     net.build()
+    #controller.start()
+    #s1.start( [controller] )
+    #s2.start( [controller] )
+    #s1.cmd("ovs-vsctl set port s1-eth4 qos=@newqos -- --id=@newqos create QoS type=linux-htb other-config:max-rate=1000000 queues:123=@1q queues:234=@2q -- --id=@1q create queue other-config:min-rate=100000 other-config:max-rate=700000 -- --id=@2q create queue other-config:min-rate=100000 other-config:max-rate=700000")
+    #s1.cmd("ovs-ofctl add-flow s1 nw_src=192.0.0.2,nw_dst=192.0.0.7,actions=enqueue:4:123")
     net.start()
     srv1 = mgr.addContainer("srv1", "h1", "servernew", "python /home/servernew.py", docker_args={},) #autonomus
     srv2 = mgr.addContainer("srv2", "h2", "dev_test", "bash", docker_args={},) #udp
@@ -82,6 +87,7 @@ def myTopology():
     srv6 = mgr.addContainer("srv6", "h6", "dev_test", "bash", docker_args={},)
     srv7 = mgr.addContainer("srv7", "h7", "dev_test", "bash", docker_args={},)
     srv8 = mgr.addContainer("srv8", "h8", "dev_test", "bash", docker_args={},)
+    spawnXtermDocker("srv1")
     spawnXtermDocker("srv2")
     spawnXtermDocker("srv7")
     CLI(net)
