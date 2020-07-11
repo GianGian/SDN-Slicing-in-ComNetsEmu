@@ -87,7 +87,6 @@ def myTopology():
     srv6 = mgr.addContainer("srv6", "h6", "dev_test", "bash", docker_args={},)
     srv7 = mgr.addContainer("srv7", "h7", "dev_test", "bash", docker_args={},)
     srv8 = mgr.addContainer("srv8", "h8", "dev_test", "bash", docker_args={},)
-    spawnXtermDocker("srv1")
     spawnXtermDocker("srv2")
     spawnXtermDocker("srv7")
     CLI(net)

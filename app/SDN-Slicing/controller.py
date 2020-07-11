@@ -57,7 +57,7 @@ class TrafficSlicing(app_manager.RyuApp):
     #                       stat.lookup_count, stat.matched_count))
     #        for t in tables:
     #            print(tables[t])
-            #self.logger.debug('TableStats: %s', tables)
+    #        self.logger.debug('TableStats: %s', tables)
 
     @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER)
 	#handshake controller-switch
